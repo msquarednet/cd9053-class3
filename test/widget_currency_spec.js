@@ -1,7 +1,7 @@
 /*globals describe it expect*/
-var WidgetCurrency = function() {
-    this.base = "foo";
-    this.amt = 0;
+var WidgetCurrency = function(base,amt) {
+    this.base = base || "foo";
+    this.amt = amt || 0;
 };
 
 describe("WidgetCurrency", function() {    
@@ -20,6 +20,22 @@ describe("WidgetCurrency", function() {
             expect(currency.amt).toEqual(0);
         });
     });    
+
+    describe("setting values with constructor", function() {    
+        describe("base", function() {
+            it("set base to return bar", function() {
+                var currency = new WidgetCurrency("bar");
+                expect(currency.base).toEqual("bar");
+            });
+        });
+        describe("amt", function() {
+            it("set amt to return 10", function() {
+                var currency = new WidgetCurrency(null,10);
+                expect(currency.amt).toEqual(10);
+            });
+        });
+    });    
+
     
     
 });
