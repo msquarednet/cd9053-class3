@@ -9,6 +9,11 @@ var WidgetCurrency = function(base,amt) {
 WidgetCurrency.prototype.display = function() {
         return this.base + " | " + this.amt;
 }
+WidgetCurrency.prototype.convert = function(toBase, rates) {
+       var ratio = rates[this.base]/rates[toBase];
+       this.amt = this.amt*ratio;
+       this.base= toBase;
+}
 
 describe("WidgetCurrency", function() {    
     it("exists", function() {
@@ -55,6 +60,27 @@ describe("WidgetCurrency", function() {
         describe("base is 'fuzz' and amt is 100", function() {
             it("is 'buzz' | 10", function() {
                 expect(currency.display()).toEqual('buzz | 100');
+            });
+        });
+    });
+    
+    describe("convert", function() {
+        var currency;
+        beforeEach(function() {
+            var exchangeRates = {
+                foo: 5,
+                bar: 10,
+                buzz: 100
+            }
+            currency = new WidgetCurrency("foo", 20);
+            currency.convert("bar", exchangeRates);
+        });
+        describe("converting 20 foo", function() {
+            it("base should be bar", function() {
+                expect(currency.base).toEqual("bar");
+            });
+            it("amt should be 10", function() {
+                expect(currency.amt).toEqual(10);
             });
         });
     });
